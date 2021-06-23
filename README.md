@@ -12,13 +12,14 @@ Câu trả lời chính là ứng dụng những tool automation để quản tr
   ![image](https://user-images.githubusercontent.com/80019984/123049465-c6439e80-d429-11eb-9a94-6c31d8390ee0.png)
 
 # Các Thuật ngữ quan trọng trong Ansible
-          + Ansible server: là nơi ansible được cài đặt và từ đó tất cả các tasks và playbooks sẽ được chạy
-          + Module: là một lệnh hoặc tập hợp các lệnh tương tự được thực thi ở client-side. Khi chúng ta giao tiếp với Ansible sẽ thông qua module
-          + Task: một task xác định một công việc đơn lẻ được hoàn thành, là những công việc nhỏ trong playbooks
-          + Role: Một tập hợp các Playbook, các file liên quan được tổ chức theo cách được xác định trước để tạo điều kiện tái sử dụng và chia sẻ
-          + Fact: các biến toàn cục chứa các thông tin về hệ thống
-          + Playbook: một file YAML chứa một tập các công việc cần tự động hóa
-          + Inventory: một file INI chứa các thông tin về các server từ xa mà bạn quản lý.
-          + Play: một lần thực thi một Playbook
-          + Handler: sử dụng để kích hoạt thay đổi trạng thái các service
-          + Tag: tên được đặt cho một task, có thể được sử dụng sau này có nhiệm vụ chỉ cụ thể task hoặc một nhóm các task
+  + Ansible server: là nơi ansible được cài đặt và từ đó tất cả các tasks và playbooks sẽ được chạy
+  + Module: là một lệnh hoặc tập hợp các lệnh tương tự được thực thi ở client-side. Khi chúng ta giao tiếp với Ansible sẽ thông qua module
+  + Task: một task xác định một công việc đơn lẻ được hoàn thành, là những công việc nhỏ trong playbooks
+  + Role: Một tập hợp các Playbook, các file liên quan được tổ chức theo cách được xác định trước để tạo điều kiện tái sử dụng và chia sẻ
+  + Fact: các biến toàn cục chứa các thông tin về hệ thống
+  + Playbook: một file YAML chứa một tập các công việc cần tự động hóa
+  + Inventory: một file INI chứa các thông tin về các server từ xa mà bạn quản lý.
+  + Play: một lần thực thi một Playbook
+  + Handler: sử dụng để kích hoạt thay đổi trạng thái các service
+  + Tag: tên được đặt cho một task, có thể được sử dụng sau này có nhiệm vụ chỉ cụ thể task hoặc một nhóm các task
+  
