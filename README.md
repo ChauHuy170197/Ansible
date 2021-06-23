@@ -11,6 +11,10 @@ Câu trả lời chính là ứng dụng những tool automation để quản tr
   - Khi Ansible ở chế độ rảnh, ko có task để thực hiện máy chủ Ansible sẽ không chiếm dụng tài nguyên do Ansible không sử dụng trình daemon hoặc program chạy ở chế độ background. Chỉ khi nào thực thi lệnh thì Ansible mới sử dụng tài nguyên của hệ thống.
   ![image](https://user-images.githubusercontent.com/80019984/123049465-c6439e80-d429-11eb-9a94-6c31d8390ee0.png)
 
+ - Như trong hình thì Management Node là Ansible server mình nói ở trên, là nơi quản lý các nodes điều khiển toàn bộ quá trình thực thi của playbook.
+ - Playbook sẽ chứa chi tiết tất cả những gì chúng ta muốn thực hiện với các server mà chúng ta muốn quản lý và cách thức thực hiện chúng
+ - Ở đây, các tệp Inventory cung cấp cho chúng ta danh sách các máy chủ mà các module Ansible cần để chạy
+ - Sau khi đọc được các host mà chúng ta cần chạy ở Inventory thì Management Node sẽ thực hiện việc connect tới các host này thông qua SSH connection và thực thi các modules
 # Các Thuật ngữ quan trọng trong Ansible
   + Ansible server: là nơi ansible được cài đặt và từ đó tất cả các tasks và playbooks sẽ được chạy
   + Module: là một lệnh hoặc tập hợp các lệnh tương tự được thực thi ở client-side. Khi chúng ta giao tiếp với Ansible sẽ thông qua module
