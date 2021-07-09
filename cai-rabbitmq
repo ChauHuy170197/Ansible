@@ -1,0 +1,81 @@
+---
+- hosts: centos7
+  become: true
+  tasks:
+  - name: set hosts name
+    shell: echo "192.168.100.115 rabbitmq-node1" >> /etc/hosts
+  - name: set hosts name 2
+    shell: echo "192.168.100.116 rabbitmq-node2" >> /etc/hosts
+  - name: set hosts name 3
+    shell: echo "192.168.100.119 rabbitmq-node3" >> /etc/hosts
+  - name: Enable SElinux
+    selinux:
+      policy: targeted
+      state: enforcing
+  - name: Disable SElinux
+    selinux:
+      state: disabled
+  - name: stop firewalld
+    systemd:
+      name: firewalld
+      state: stopped
+      enabled: no
+  - name: install packages
+    yum:
+       name: "{{ packages }}"
+    vars:
+      packages:
+      - nano
+      - wget
+      - telnet
+      - yum-utils
+  - name: install epel-release
+    yum:
+      name: epel-release
+      state: present
+  - name: mkdir file rpm
+    shell: mkdir /home/download-rpm
+    shell: yumdownloader rabbitmq-server --destdir /home/download-rpm --resolve
+  - name: Install rabbitmq
+    shell: yum install -y --cacheonly --disablerepo=* /home/download-rpm/*.rpm
+  - name: start rabbitmq
+    service:
+      name: rabbitmq-server
+      state: started
+      enabled: yes
+  - name: create erlang.cookie
+    shell: echo ABCDXYZKLMNHUY > /var/lib/rabbitmq/.erlang.cookie
+  - name: update
+    yum:
+      update_cache: yes
+  - name: start rabbitmq-management
+    shell: sudo rabbitmq-plugins enable rabbitmq_management
+  - name: restart rabbitmq
+    shell: sudo systemctl restart rabbitmq-server
+- hosts: cluster
+  become: true
+  tasks:
+  - name: stop rabbitmq and join cluster
+    shell: sudo rabbitmqctl stop_app
+  - name: join cluster
+    shell: sudo rabbitmqctl join_cluster rabbit@rabbitmq-node1
+  - name: start rabbitmq
+    shell: sudo rabbitmqctl start_app
+- hosts: rabbitmq-node1
+  become: true
+  tasks:
+  - name: create new administrator
+    shell: sudo rabbitmqctl add_user huy170197 huy1997
+  - name: set user
+    shell: sudo rabbitmqctl set_user_tags huy170197 administrator
+  - name: set permission
+    shell: sudo rabbitmqctl set_permissions -p / huy170197 ".*" ".*" ".*"
+  - name: delete user guest
+    shell: sudo rabbitmqctl delete_user guest
+  - name: set plocy
+    shell: sudo rabbitmqctl set_policy ha-all ".*" '{"ha-mode":"all"}'
+- hosts: centos7
+  become: true
+  tasks:
+  - name: restart rabbitmq
+    shell: sudo systemctl restart rabbitmq-server
