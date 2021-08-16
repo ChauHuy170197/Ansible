@@ -1,0 +1,59 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: Enable SElinux
+    selinux:
+      policy: targeted
+      state: enforcing
+  - name: Disable SElinux
+    selinux:
+      state: disabled
+  - name: update
+    yum:
+      update_cache: yes
+  - name: install epel-release
+    yum:
+      name: epel-release
+      state: present
+  - name: install net-tools
+    yum:
+      name: net-tools
+      state: present
+  - name: install packages
+    yum:
+       name: "{{ packages }}"
+    vars:
+      packages:
+      - nano
+      - wget
+      - telnet
+      - htop
+      - open-vm-tools
+      - iotop
+      - ntpdate
+  - name: Insert limits.config
+    blockinfile:
+      path: /etc/security/limits.conf
+      block: |
+        *         soft nproc 65535
+        *         hard nproc 65535
+
+        *         hard    nofile      500000
+        *         soft    nofile      500000
+        root      hard    nofile      500000
+        root      soft    nofile      500000
+  - name: Insert sysctl.conf
+    blockinfile:
+      path: /etc/sysctl.conf
+      block: |
+        fs.inotify.max_user_watches = 1048576
+        fs.file-max = 500000
+  - name: Print sysctl.conf
+    shell: sysctl -p /etc/sysctl.conf
+  - name: write sysctl.conf
+    shell: sysctl -w fs.file-max=100000
+  - name:  Print system
+    shell: sysctl --system 
+  - name: time sync
+    shell: ln -f -s /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime
